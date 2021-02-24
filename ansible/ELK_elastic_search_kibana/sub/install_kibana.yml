@@ -32,3 +32,6 @@
       systemd:
         state: started
         name: kibana
+    - name: Display Grafana server adress.
+      debug:
+        msg: Kibana can be accessed at http://{{ ansible_default_ipv4.address }}:5601
