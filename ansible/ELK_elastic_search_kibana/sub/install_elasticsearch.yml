@@ -1,0 +1,39 @@
+- name: Install and configure Elasticsearch
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update  
+      apt:
+        update_cache: yes
+    - name: Install elasticsearch installation requirement
+      apt:
+        name: apt-transport-https
+        state: present
+    - name: Add an Apt signing key, uses whichever key is at the URL
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+    - name: Add specified repository into sources list using specified filename.
+      apt_repository:
+        repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+        state: present
+        filename: elastic-7.x
+    - name: Update  
+      apt:
+        update_cache: yes
+    - name: Install elasticsearch
+      apt:
+        name: elasticsearch
+        state: present
+    - name: Reload systemd dameon
+      systemd:
+        daemon_reload: yes
+    - name: enable service elasticsearch and ensure it is not masked
+      systemd:
+        name: elasticsearch.service
+        enabled: yes
+        masked: no
+    - name: Make sure service elasticsearch is running
+      systemd:
+        state: started
+        name: elasticsearch

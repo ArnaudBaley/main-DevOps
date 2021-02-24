@@ -1,0 +1,33 @@
+- name: Configure grafana with prometheus.
+  hosts: all
+  remote_user: root
+  tasks:
+  
+  - name: Add prometheus as data source.
+    grafana_datasource:
+      name: "prometheus"
+      grafana_url: "http://localhost:3000"
+      grafana_user: "admin"
+      grafana_password: "admin"
+      ds_type: "prometheus"
+      ds_url: "http://localhost:9090"
+  
+  - name: Copy dashboard JSON file to target system.
+    copy:
+      src: dashboard_prometheus_node_exporter.json
+      dest: dashboard_prometheus_node_exporter.json
+
+  - name: Import dashboard.
+    grafana_dashboard:
+      grafana_url: "http://localhost:3000"
+      url_username: admin
+      url_password: admin
+      state: present
+      message: Updated by ansible
+      overwrite: yes
+      path: dashboard_prometheus_node_exporter.json
+  
+  - name: Delete dashboard JSON file to target system.
+    file:
+      path: dashboard_prometheus_node_exporter.json
+      state: absent

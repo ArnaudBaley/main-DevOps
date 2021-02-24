@@ -1,0 +1,4 @@
+- import_playbook: install_elasticsearch.yml
+- import_playbook: install_kibana.yml
+# - import_playbook: install_logstash.yml
+- import_playbook: install_filebeat.yml

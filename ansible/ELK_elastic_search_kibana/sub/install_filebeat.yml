@@ -1,0 +1,32 @@
+- name: Install and configure Filebeat.
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update apt.  
+      apt:
+        update_cache: yes
+    - name: Install Filebeat.
+      apt:
+        name: filebeat
+        state: present
+    - name: Start service filebeat.
+      systemd:
+        state: started
+        name: filebeat
+    - name: enable service filebeat.
+      systemd:
+        name: filebeat
+        enabled: yes
+        masked: no
+    - name: Install filebeat module "system".
+      shell: filebeat modules enable system
+    - name: Set up initial environment (load kibana dashboards etc…).
+      shell: filebeat setup -e
+    - name: stop service filebeat
+      systemd:
+        state: stopped
+        name: filebeat
+    - name: start service filebeat
+      systemd:
+        state: started
+        name: filebeat

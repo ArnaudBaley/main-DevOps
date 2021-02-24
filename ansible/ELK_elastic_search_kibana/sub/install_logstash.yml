@@ -1,0 +1,44 @@
+- name: Install Logstash
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update  
+      apt:
+        update_cache: yes
+    - name: Install Logstash dependencies
+      apt:
+        name: default-jdk
+        state: present
+    - name: Install Logstash
+      apt:
+        name: logstash
+        state: present
+    - name: Start service logstash
+      systemd:
+        state: started
+        name: logstash
+    - name: enable service logstash
+      systemd:
+        name: logstash
+        enabled: yes
+        masked: no
+    - name: replace line in configuration file -> http.host
+      lineinfile: 
+        dest: /etc/logstash/logstash.yml 
+        regexp: '^(.*)# http.host: "127.0.0.1"(.*)$' 
+        line: 'http.host: "127.0.0.1"'
+        backrefs: yes
+    - name: replace line in configuration file -> http.port
+      lineinfile: 
+        dest: /etc/logstash/logstash.yml 
+        regexp: '^(.*)# http.port: 9600-9700(.*)$'
+        line: 'http.port: "9600-9700"'
+        backrefs: yes
+    - name: stop service logstash
+      systemd:
+        state: stopped
+        name: logstash
+    - name: start service logstash
+      systemd:
+        state: started
+        name: logstash

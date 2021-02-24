@@ -1,0 +1,9 @@
+- name: Install docker-compose RASPBERRY
+  hosts: all
+  remote_user: root 
+  tasks: 
+  
+    - name: Install docker-compose via pip
+      pip:
+        name: docker-compose
+        executable: pip3

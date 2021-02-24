@@ -1,0 +1,8 @@
+- name: Update + Upgrade
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update & Upgrade  
+      apt:
+        upgrade: yes
+        update_cache: yes

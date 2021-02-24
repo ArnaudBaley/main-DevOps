@@ -1,0 +1,34 @@
+- name: Install and configure Kibana
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update apt  
+      apt:
+        update_cache: yes
+    - name: Install kibana
+      apt:
+        name: kibana
+        state: present
+    - name: restart service kibana
+      systemd:
+        state: started
+        name: kibana
+    - name: enable service kibana
+      systemd:
+        name: kibana
+        enabled: yes
+        masked: no
+    - name: replace line in configuration file -> Access from any remote location 
+      lineinfile: 
+        dest: /etc/kibana/kibana.yml
+        regexp: '^(.*)#server.host: "localhost"(.*)$' 
+        line: 'server.host: "0.0.0.0"'
+        backrefs: yes
+    - name: stop service kibana
+      systemd:
+        state: stopped
+        name: kibana
+    - name: start service kibana
+      systemd:
+        state: started
+        name: kibana

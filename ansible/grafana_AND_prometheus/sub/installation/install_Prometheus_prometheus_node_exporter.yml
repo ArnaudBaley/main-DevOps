@@ -1,0 +1,14 @@
+- name: Install and configure Prometheus & prometheus-node-exporter.
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update  
+      apt:
+        update_cache: yes
+    - name: Install prometheus.
+      apt:
+        name: prometheus
+        state: present
+    - name: Display prometheus server adress.
+      debug:
+        msg: Prometheus can be accessed at http://{{ ansible_default_ipv4.address }}:9090        
