@@ -1,0 +1,2 @@
+- import_playbook: ELK_elastic_search_kibana/install_ELK.yml
+- import_playbook: grafana_AND_prometheus/install_configure_grafana_prometheus.yml
