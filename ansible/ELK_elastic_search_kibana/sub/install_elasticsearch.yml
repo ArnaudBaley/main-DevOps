@@ -25,6 +25,18 @@
       apt:
         name: elasticsearch
         state: present
+    - name: replace line in configuration file -> Set minimal java memory to 256m
+      lineinfile: 
+        dest: /etc/elasticsearch/jvm.options
+        regexp: '^(.*)## -Xms4g(.*)$' 
+        line: '-Xms256m'
+        backrefs: yes
+    - name: replace line in configuration file -> Set maximal java memory to 256m
+      lineinfile: 
+        dest: /etc/elasticsearch/jvm.options
+        regexp: '^(.*)## -Xmx4g(.*)$' 
+        line: '-Xmx256m'
+        backrefs: yes
     - name: Reload systemd dameon
       systemd:
         daemon_reload: yes
@@ -33,6 +45,14 @@
         name: elasticsearch.service
         enabled: yes
         masked: no
+    - name: stop service elasticsearch
+      systemd:
+        state: stopped
+        name: elasticsearch
+    - name: start service elasticsearch
+      systemd:
+        state: started
+        name: elasticsearch
     - name: Make sure service elasticsearch is running
       systemd:
         state: started
