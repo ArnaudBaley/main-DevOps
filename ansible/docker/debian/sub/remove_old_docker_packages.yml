@@ -1,0 +1,29 @@
+- name: Remove old docker packages if they exist.
+  hosts: all
+  remote_user: root 
+  tasks: 
+    
+    - name: Remove old package "docker" if exists.
+      apt:
+        name: docker
+        state: absent
+
+    - name: Remove old package "docker-engine" if exists.
+      apt:
+        name: docker-engine
+        state: absent
+
+    - name: Remove old package "docker.io" if exists.
+      apt:
+        name: docker.io
+        state: absent
+
+    - name: Remove old package "containerd" if exists.
+      apt:
+        name: containerd
+        state: absent
+    
+    - name: Remove old package "runc" if exists.
+      apt:
+        name: runc
+        state: absent

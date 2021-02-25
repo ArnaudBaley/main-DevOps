@@ -1,0 +1,29 @@
+- name: Install docker dependencies.
+  hosts: all
+  remote_user: root 
+  tasks: 
+    
+    - name: Update & Upgrade.
+      apt:
+        upgrade: yes
+        update_cache: yes
+    
+    - name: Install apt-transport-https package.
+      apt:
+        name: apt-transport-https
+
+    - name: Install ca-certificates package.
+      apt:
+        name: ca-certificates 
+
+    - name: Install curl package.
+      apt:
+        name: curl                
+
+    - name: Install gnupg-agent package.
+      apt:
+        name: gnupg-agent
+
+    - name: Install software-properties-common package.
+      apt:
+        name: software-properties-common

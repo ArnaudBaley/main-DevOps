@@ -3,20 +3,41 @@
   remote_user: root 
   tasks: 
     
-    - name: Download get-docker.sh installer
-      uri: 
-        url: https://get.docker.com
-        dest: /tmp/get-docker.sh
+    - name: Add Docker’s official GPG key.
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
 
-    - name: Changing perm of file, adding "+x" for all
-      file: 
-        dest=/tmp/get-docker.sh
-        mode=a+x
+    - name: generate lsb_release variable.
+      shell: lsb_release -cs
+      register: lsb_release
+      run_once: true
 
-    - name: Execute the get-docker.sh
-      shell: /tmp/get-docker.sh
+    - set_fact: 
+        lsb_release={{ lsb_release.stdout }}
 
-    - name: Remove the get-docker.sh
-      file: 
-        path=/tmp/get-docker.sh
-        state=absent
+    - name: Display lsb_release.
+      debug:
+        msg: lsb_release -cs = {{ lsb_release }}.
+
+    - name: Add docker repository (/etc/apt/sources/list.d directory).
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ lsb_release }} stable
+        state: present
+
+    - name: Update & Upgrade.
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: Install docker-ce package.
+      apt:
+        name: docker-ce
+
+    - name: Install docker-ce-cli package.
+      apt:
+        name: docker-ce-cli
+
+    - name: Install containerd.io package.
+      apt:
+        name: containerd.io

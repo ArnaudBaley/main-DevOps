@@ -1,2 +1,4 @@
+- import_playbook: sub/remove_old_docker_packages.yml
+- import_playbook: sub/install_docker_depencies.yml
 - import_playbook: sub/install_docker.yml
 - import_playbook: sub/install_docker.yml
