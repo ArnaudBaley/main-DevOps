@@ -2,8 +2,39 @@
   hosts: all
   remote_user: root 
   tasks: 
-  
-    - name: Install docker-compose via pip
-      pip:
-        name: docker-compose
-        executable: pip3
+
+    - name: generate uname_s variable.
+      shell: uname -s
+      register: uname_s
+      run_once: true
+
+    - set_fact: 
+        uname_s={{ uname_s.stdout }}
+
+    - name: Display uname_s.
+      debug:
+        msg: uname -s = {{ uname_s }}.
+
+    - name: generate uname -m variable.
+      shell: uname -m
+      register: uname_m
+      run_once: true
+
+    - set_fact: 
+        uname_m={{ uname_m.stdout }}
+
+    - name: Display uname_s.
+      debug:
+        msg: uname -m = {{ uname_m }}.
+
+    - name: Download docker-compose bin at https://github.com/docker/compose/releases/download/1.28.4/docker-compose-{{ uname_s }}-{{ uname_m }}
+      get_url: 
+        url: https://github.com/docker/compose/releases/download/1.28.4/docker-compose-{{ uname_s }}-{{ uname_m }}
+        dest: /usr/local/bin/docker-compose
+
+    - name: Display check version warning.
+      debug:
+        msg: "Check new versions at : https://docs.docker.com/compose/install/"
+
+    - name: chmod +x /usr/local/bin/docker-compose.
+      file: dest=/usr/local/bin/docker-compose mode=+x

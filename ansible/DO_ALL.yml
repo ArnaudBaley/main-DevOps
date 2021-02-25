@@ -1,2 +1,3 @@
 - import_playbook: ELK_elastic_search_kibana/install_ELK.yml
 - import_playbook: grafana_AND_prometheus/install_configure_grafana_prometheus.yml
+- import_playbook: docker/debian/install_docker_AND_docker_compose.yml
