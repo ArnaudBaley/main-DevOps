@@ -1,4 +1,4 @@
-- name: Download + Install docker for RASPBERRY PI
+- name: Download + Install docker
   hosts: all
   remote_user: root 
   tasks: 

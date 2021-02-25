@@ -1,4 +1,4 @@
-- name: Install docker-compose RASPBERRY
+- name: Install docker-compose
   hosts: all
   remote_user: root 
   tasks: 
