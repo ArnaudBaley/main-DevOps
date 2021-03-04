@@ -1,0 +1,37 @@
+- name: Set SSH slack alert for successful auth.
+  hosts: all
+  remote_user: root
+  tasks:
+
+  - name: Import variables.
+    include_vars: ../CONFIG.yml
+
+  - name: Install curl.
+    apt:
+      name: curl
+      state: present
+
+  - name: Creates directory /etc/pam.scripts & set permissions.
+    file:
+      path: /etc/pam.scripts
+      state: directory
+      mode: 0755
+
+  - name: install my_app configuration file from template
+    template:
+      src: ssh_alert_slack.sh
+      dest: /etc/pam.scripts/ssh_alert_slack.sh
+
+  - name: for security reasons, you should allow just root user to write and exec the script
+    file: 
+      dest: /etc/pam.scripts/ssh_alert_slack.sh
+      owner: root
+      mode: 0700
+
+  - name: Configuring /etc/pam.d/sshd
+    blockinfile:
+      path: /etc/pam.d/sshd
+      block: |
+      
+        # SSH Alert script
+        session required pam_exec.so /etc/pam.scripts/ssh_alert_slack.sh
