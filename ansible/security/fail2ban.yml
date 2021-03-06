@@ -1,0 +1,11 @@
+- name: Install fail2ban.
+  hosts: all
+  remote_user: root 
+  tasks: 
+    - name: Update  
+      apt:
+        update_cache: yes
+    - name: Install fail2ban.
+      apt:
+        name: fail2ban
+        state: present
