@@ -4,7 +4,7 @@
   tasks:
 
   - name: Import variables.
-    include_vars: ../CONFIG.yml
+    include_vars: ../../CONFIG.yml
 
   - name: Install curl.
     apt:
