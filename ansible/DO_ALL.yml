@@ -3,3 +3,6 @@
 - import_playbook: docker/debian/install_docker_AND_docker_compose.yml
 - import_playbook: security/alerting/set_SSH_auth_slack_alerts.yml
 - import_playbook: security/fail2ban.yml
+- import_playbook: security/firewalld.yml
+
+# TODO : Nginx with reverse proxy for Kibana / Grafana / Prometheus / Node expoter
